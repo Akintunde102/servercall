@@ -35,7 +35,14 @@ export interface CreateServerCall {
   handleServerError: (args: HandleServerError) => any;
   logger: any;
   baseUrl: string;
-  defaultResponseDataDept: (response: any) => any
+  defaultResponseDataDept: (response: any) => any;
+  successFieldDept?: (response: any) => any;
+}
+
+export interface ServerCall {
+  path: string | Function,
+  verb: ServerCallVerbs,
+  dataByDept?: Function,
 }
 
 

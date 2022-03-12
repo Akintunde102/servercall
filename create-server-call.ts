@@ -7,9 +7,9 @@ import {
     CreateServerCall
 } from './index';
 
-type CreateServerCallResponse = <T>(serverCallArgs: ServerCallArgs) => Promise<T | any>
+type CreateServerCallResponse = <T>(serverCallArgs: ServerCallArgs) => Promise<T | any>;
 
-export const createServerCall = <DefaultServerCallResponse>({ defaultAuthSource, handleServerError, baseUrl, logger, defaultResponseDataDept }: CreateServerCall): CreateServerCallResponse => { 
+export const createServerCall = <DefaultServerCallResponse>({ defaultAuthSource, handleServerError, baseUrl, logger, defaultResponseDataDept, successFieldDept = undefined }: CreateServerCall): CreateServerCallResponse => {
 
     const server = createAxiosInstances(baseUrl);
 
@@ -35,19 +35,19 @@ export const createServerCall = <DefaultServerCallResponse>({ defaultAuthSource,
             const response = await server[verb](props);
             const responseInDept = responseDataDept(response);
 
-            const { success, data: dataReturned } = responseInDept;
-
             let onSuccessResponse = null;
 
+            const success = successFieldDept === undefined ? true : successFieldDept(response);
+
             if (success && onSuccess) {
-                onSuccessResponse = onSuccess(dataReturned);
+                onSuccessResponse = onSuccess(responseInDept);
             }
 
             if (debug) {
-                logger.log({ endpoint: props.url, pureResponse: response, responseInDept, success, dataReturned, onSuccessResponse });
+                logger.log({ endpoint: props.url, pureResponse: response, responseInDept, success, dataReturned: responseInDept, onSuccessResponse });
             }
 
-            return { success, dataReturned, onSuccessResponse };
+            return { success, dataReturned: responseInDept, onSuccessResponse };
         } catch (error: any) {
             return handleServerError({ error, errorTag: props.url, defaultError });
         }
