@@ -1,0 +1,14 @@
+{
+    "name": "servercall",
+    "version": "1.0.0",
+    "description": "Make Http Requests Easily",
+    "license": "MIT",
+    "repository": "akintunde102/servercall",
+    "main": "index.ts",
+    "keywords": [
+        "http",
+        "npm",
+        "package",
+        "request"
+    ]
+}
