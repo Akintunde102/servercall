@@ -1,6 +1,6 @@
 # Server Call
 
-##Install
+## Install
 ```
 npm install servercall
 ```
@@ -14,17 +14,19 @@ const createServerCallConfig: CreateServerCall = {
     handleServerError: () => {// here is where you handle error returned}, 
     baseUrl: "https://example.com/api",
     logger: console.log,
-    defaultResponseDataDept: (response: any) => response?.['data']?.['data']
+    defaultResponseDataDept: (response: any) => response?.['data']?,
+    successFieldDept: (response: any) => response?.['data']?.['success'],
 }
 ```
 export const serverCall = createServerCall(createServerCallConfig);
 
 
--- Set Up Store
+- Set Up Store
 
 > The store is meant to be a map of all your api endpoints you make calls to. It has to follow the model below
 
 ```
+//server-call-store.ts
 import { ServerCallVerbs, ServerCall } from "server-call";
 
 export type ServerCallsType = Record<ServerCallsKeyType, ServerCall>;
@@ -43,8 +45,16 @@ export type ServerCallsKeyType =  "userExists" | "sendShortCode" | "getUser";
 
 ## Usage
 ```
-import { ServerCallVerbs, ServerCall } from "server-call";
+import { serverCall } from "server-call";
+import { serverCalls } from "./server-call-store";
 
-
+ const { success, error } = await serverCall({
+      serverCallProps: {
+        call: serverCalls.sendShortCode,
+        data: {
+          phoneNumber: +2349045908756
+        }
+      },
+    });
 ```
 
