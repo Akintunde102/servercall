@@ -4,80 +4,80 @@ import { ServerCallProps, ServerCallArgs, ServerGetArgs, createAxiosInstances, C
 type CreateServerCallResponse = <T>(serverCallArgs: ServerCallArgs) => Promise<T | any>;
 
 export const createServerCall = <DefaultServerCallResponse>({
-    defaultAuthSource,
-    handleServerError: customServerError,
-    baseUrl,
-    logger,
-    defaultResponseDataDept,
-    successFieldDept,
+  defaultAuthSource,
+  handleServerError: customServerError,
+  baseUrl,
+  logger,
+  defaultResponseDataDept,
+  successFieldDept,
 }: CreateServerCall): CreateServerCallResponse => {
-    const server = createAxiosInstances(baseUrl);
-    const handleServerError = customServerError || defaultServerErrorHandler;
+  const server = createAxiosInstances(baseUrl);
+  const handleServerError = customServerError || defaultServerErrorHandler;
 
-    const serverCall = async <ServerCallResponse = DefaultServerCallResponse>(
-        serverCallArgs: ServerCallArgs,
-    ): Promise<ServerCallResponse | any> => {
-        const {
-            serverCallProps,
-            onSuccess,
-            run = true,
-            defaultError = 'Something Unusual Happened, please try again',
-            debug,
-        } = serverCallArgs;
+  const serverCall = async <ServerCallResponse = DefaultServerCallResponse>(
+    serverCallArgs: ServerCallArgs,
+  ): Promise<ServerCallResponse | any> => {
+    const {
+      serverCallProps,
+      onSuccess,
+      run = true,
+      defaultError = 'Something Unusual Happened, please try again',
+      debug,
+    } = serverCallArgs;
 
-        if (!run) {
-            return;
-        }
+    if (!run) {
+      return;
+    }
 
-        const { verb, responseDataDept = defaultResponseDataDept } = serverCallProps.call;
-        const props = getServerCallProps<typeof verb>(serverCallProps, serverCallArgs);
+    const { verb, responseDataDept = defaultResponseDataDept } = serverCallProps.call;
+    const props = getServerCallProps<typeof verb>(serverCallProps, serverCallArgs);
 
-        try {
-            const response = await server[verb](props);
-            const responseInDept = responseDataDept(response);
+    try {
+      const response = await server[verb](props);
+      const responseInDept = responseDataDept(response);
 
-            let onSuccessResponse = null;
+      let onSuccessResponse = null;
 
-            const success = successFieldDept === undefined ? true : successFieldDept(response);
+      const success = successFieldDept === undefined ? true : successFieldDept(response);
 
-            if (success && onSuccess) {
-                onSuccessResponse = onSuccess(responseInDept);
-            }
+      if (success && onSuccess) {
+        onSuccessResponse = onSuccess(responseInDept);
+      }
 
-            if (debug) {
-                logger.log({
-                    endpoint: props.url,
-                    pureResponse: response,
-                    responseInDept,
-                    success,
-                    dataReturned: responseInDept,
-                    onSuccessResponse,
-                });
-            }
+      if (debug) {
+        logger.log({
+          endpoint: props.url,
+          pureResponse: response,
+          responseInDept,
+          success,
+          dataReturned: responseInDept,
+          onSuccessResponse,
+        });
+      }
 
-            return { success, dataReturned: responseInDept, onSuccessResponse };
-        } catch (error: any) {
-            return handleServerError({ error, errorTag: props.url, defaultError });
-        }
-    };
+      return { success, dataReturned: responseInDept, onSuccessResponse };
+    } catch (error: any) {
+      return handleServerError({ error, errorTag: props.url, defaultError });
+    }
+  };
 
-    const getServerCallProps = <T>(
-        serverCallProps: ServerCallProps,
-        serverCallArgs: ServerCallArgs,
-        authSource: () => string = defaultAuthSource,
-    ): ServerGetArgs<T> => {
-        const { path, name } = serverCallProps.call;
+  const getServerCallProps = <T>(
+    serverCallProps: ServerCallProps,
+    serverCallArgs: ServerCallArgs,
+    authSource: () => string = defaultAuthSource,
+  ): ServerGetArgs<T> => {
+    const { path, name } = serverCallProps.call;
 
-        let url = path as string;
+    let url = path as string;
 
-        if (typeof path === 'function') {
-            if (!serverCallArgs?.pathArgs) throw new Error(`(${name}) was called  without the compulsory PathArgs`);
-            url = path(serverCallArgs?.pathArgs);
-        }
+    if (typeof path === 'function') {
+      if (!serverCallArgs?.pathArgs) throw new Error(`(${name}) was called  without the compulsory PathArgs`);
+      url = path(serverCallArgs?.pathArgs);
+    }
 
-        const token = serverCallArgs.authorized ? authSource() : undefined;
-        return { ...serverCallProps, url, token };
-    };
+    const token = serverCallArgs.authorized ? authSource() : undefined;
+    return { ...serverCallProps, url, token };
+  };
 
-    return serverCall;
+  return serverCall;
 };

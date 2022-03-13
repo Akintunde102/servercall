@@ -43,4 +43,3 @@ export interface CreateServerCall {
   defaultResponseDataDept: (response: any) => any;
   successFieldDept?: (response: any) => any;
 }
-
