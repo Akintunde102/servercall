@@ -13,7 +13,7 @@ const createServerCallConfig: CreateServerCall = {
     defaultAuthSource: () => "bearer token",
     handleServerError: () => {// here is where you handle error returned}, 
     baseUrl: "https://example.com/api",
-    logger: console.log,
+    logger: console,
     defaultResponseDataDept: (response: any) => response?.['data']?,
     successFieldDept: (response: any) => response?.['data']?.['success'],
 }
