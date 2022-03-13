@@ -3,12 +3,37 @@
     "version": "1.0.0",
     "description": "Make Http Requests Easily",
     "license": "MIT",
+    "files": [
+        "lib/**/*"
+    ],
     "repository": "akintunde102/servercall",
-    "main": "index.ts",
+    "main": "lib/index.js",
+    "types": "lib/index.d.ts",
+    "author": "Akintunde Jegede",
     "keywords": [
         "http",
         "npm",
         "package",
         "request"
-    ]
+    ],
+    "dependencies": {
+        "axios": "^0.26.0"
+    },
+    "scripts": {
+        "test": "jest --config jestconfig.json",
+        "build": "tsc",
+        "format": "prettier --write \"src/**/*.ts\" \"lib/*.js\"",
+        "lint": "tslint -p tsconfig.json",
+        "prepare": "npm run build",
+        "prepublishOnly": "npm test && npm run lint",
+        "preversion": "npm run lint",
+        "version": "npm run format && git add -A src",
+        "postversion": "git push && git push --tags"
+    },
+    "devDependencies": {
+        "prettier": "^2.5.1",
+        "tslint": "^6.1.3",
+        "tslint-config-prettier": "^1.18.0",
+        "typescript": "^4.6.2"
+    }
 }
