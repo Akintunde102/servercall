@@ -1,5 +1,5 @@
-import { createServerCall } from "../create-server-call";
-import { serverCalls } from "./resources/fake-server-call-store";
+import { createServerCall } from "../../create-server-call";
+import { serverCalls } from "../resources/fake-server-call-store";
 
 
 describe('ServerCall', () => {
