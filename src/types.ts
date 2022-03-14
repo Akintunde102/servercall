@@ -43,3 +43,5 @@ export interface CreateServerCall {
   defaultResponseDataDept: (response: any) => any;
   successFieldDept?: (response: any) => any;
 }
+
+export type ServerCallsType<T extends string> = Record<T, ServerCall>;

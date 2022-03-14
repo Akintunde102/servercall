@@ -1,60 +1,63 @@
-# Server Call
 
-## Install
+### Install the Npm Package
 ```
-npm install servercall
+npm install servercall --save
 ```
 
-## Set up
-- Create the Caller Function
-
-```
-const createServerCallConfig: CreateServerCall = {
-    defaultAuthSource: () => "bearer token",
-    handleServerError: () => {// here is where you handle error returned}, 
-    baseUrl: "https://example.com/api",
-    logger: console,
-    defaultResponseDataDept: (response: any) => response?.['data']?,
-    successFieldDept: (response: any) => response?.['data']?.['success'],
-}
-```
-export const serverCall = createServerCall(createServerCallConfig);
-
-
-- Set Up Store
-
-> The store is meant to be a map of all your api endpoints you make calls to. It has to follow the model below
+### Create a folder called `servercall` inside your project. 
+Your store and server initialization will be stored here
 
 ```
-//server-call-store.ts
-import { ServerCallVerbs, ServerCall } from "server-call";
+mkdir servercall
+```
 
-export type ServerCallsType = Record<ServerCallsKeyType, ServerCall>;
+### Create an Endpoint Store file (/servercall/store.ts) . 
 
-export const getDataByGeneralDept = (response: any) => response?.['data']?.['data'];
+This is where you endpoints are stored. <br/>
+You can copy the code below and follow the model to create your own store
 
-export const serverCalls: ServerCallsType = {
-  userExists: { path: `/users/exists`, verb: ServerCallVerbs.Post},
-  sendShortCode: { path: `/users/send/short-code`, verb: ServerCallVerbs.Post },
-  getUser: { path: (args: { id: string }) => `/users/id/${args.id}`, verb: ServerCallVerbs.Get }
+```
+
+import { ServerCallVerbs, ServerCallsType } from '../../types';
+
+export type ServerCallsKeyType = 'userExists' | 'sendShortCode' | 'getUser';
+
+export const serverCalls: ServerCallsType<ServerCallsKeyType> ={
+  userExists: { path: `/users/exists`, verb: ServerCallVerbs.Post, name: 'UserExists' },
+  sendShortCode: { path: `/users/send/short-code`, verb: ServerCallVerbs.Post, name: 'SendShortCode' },
+  getUser: { path: (args: { id: string }) => `/users/id/${args.id}`, verb: ServerCallVerbs.Get, name: 'GetUser' },
 };
 
-export type ServerCallsKeyType =  "userExists" | "sendShortCode" | "getUser";
+```
+### > You are almost done
+
+### Create the initialization file (servercall/index.ts)
 
 ```
+  const serverCall = createServerCall({
+    baseUrl: 'http://localhost:9000',
+    logger: mockConsole,
+    defaultAuthSource: () => 'fake-auth',
+    defaultResponseDataDept: (response: any) => response?.['data'],
+    successFieldDept: (response: any) => response?.['data']?.['success'],
+  });
 
-## Usage
+export const serverCall;
 ```
-import { serverCall } from "server-call";
-import { serverCalls } from "./server-call-store";
 
- const { success, error } = await serverCall({
-      serverCallProps: {
-        call: serverCalls.sendShortCode,
-        data: {
-          phoneNumber: +2349045908756
-        }
-      },
+### Finally, USAGE:
+
+``` 
+  import {serverCall} from './servercall';
+
+  const {success, error, dataReturned} = await serverCall({
+      serverCallProps: { call: serverCalls.getUser },
+      pathArgs: { id: '620aec25eaf54c618c8f26f2' },
+      authorized: true,
+      run: false,
     });
 ```
+
+
+
 
