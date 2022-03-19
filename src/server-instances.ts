@@ -53,7 +53,6 @@ export const createAxiosInstances = (baseURL: string) => {
           params,
         });
       } catch (error) {
-        console.log({ error: error });
         throw error;
       }
     },
