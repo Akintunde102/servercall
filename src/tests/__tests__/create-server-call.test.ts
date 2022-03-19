@@ -2,14 +2,15 @@ import { createServerCall } from '../../create-server-call';
 import { serverCalls } from '../resources/fake-server-call-store';
 
 describe('ServerCall', () => {
-  const mockConsole = { log: () => {} };
+  const mockConsole = { log: () => { } };
   const mockConsoleLog = jest.spyOn(mockConsole, 'log');
   const serverCall = createServerCall({
     baseUrl: 'http://localhost:9000',
     logger: mockConsole,
+    handleServerError: () => { },
     defaultAuthSource: () => 'fake-auth',
-    defaultResponseDataDept: (response: any) => response?.['data'],
-    successFieldDept: (response: any) => response?.['data']?.['success'],
+    defaultResponseDataDept: (response: any) => response?.['data']?.['data']?.['data'],
+    successFieldDept: (response: any) => response?.['data']?.['data']?.['success'],
   });
 
   it('passes serverCall as a function', () => {
@@ -34,7 +35,28 @@ describe('ServerCall', () => {
       authorized: true,
       debug: true,
     });
-
     expect(mockConsoleLog).toHaveBeenCalledTimes(1);
+  });
+
+  it('returns correct response', async () => {
+    const response = await serverCall({
+      serverCallProps: { call: serverCalls.getUser },
+      pathArgs: { id: '620aec25eaf54c618c8f26f2' },
+      authorized: true,
+    });
+    expect(response.success).toEqual(true);
+    expect(response.dataReturned).toBeDefined()
+  });
+
+  it('returns onSuccessResponse', async () => {
+    const response = await serverCall({
+      serverCallProps: { call: serverCalls.getUser },
+      pathArgs: { id: '620aec25eaf54c618c8f26f2' },
+      authorized: true,
+      onSuccess: (dataReturned: any) => {
+        return "done";
+      }
+    });
+    expect(response.onSuccessResponse).toBe("done")
   });
 });

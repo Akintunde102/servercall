@@ -1,3 +1,5 @@
+import { createAxiosInstances } from "./server-instances";
+
 type AnyFunction = () => any;
 
 type PathFunction = (args: any) => string;
@@ -43,5 +45,12 @@ export interface CreateServerCall {
   defaultResponseDataDept: (response: any) => any;
   successFieldDept?: (response: any) => any;
 }
+
+export interface ServeServerCall extends Omit<CreateServerCall, 'baseUrl'> {
+  server: ReturnType<typeof createAxiosInstances>;
+  handleServerError: (args: HandleServerError) => any;
+}
+
+export type CreateServerCallResponse = <T>(serverCallArgs: ServerCallArgs) => Promise<T | any>;
 
 export type ServerCallsType<T extends string> = Record<T, ServerCall>;

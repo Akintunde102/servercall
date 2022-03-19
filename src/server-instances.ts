@@ -38,15 +38,24 @@ export const createAxiosInstances = (baseURL: string) => {
 
   return {
     post<T = any>({ url, data, token, contentType }: ServerPostArgs<T>) {
-      return axiosCreate.post(url, data, {
-        headers: createHeaders(token, contentType),
-      });
+      try {
+        return axiosCreate.post(url, data, {
+          headers: createHeaders(token, contentType),
+        });
+      } catch (error) {
+        throw error;
+      }
     },
     get<T = any>({ url, params, token, contentType }: ServerGetArgs<T>) {
-      return axiosCreate.get(url, {
-        headers: createHeaders(token, contentType),
-        params,
-      });
+      try {
+        return axiosCreate.get(url, {
+          headers: createHeaders(token, contentType),
+          params,
+        });
+      } catch (error) {
+        console.log({ error: error });
+        throw error;
+      }
     },
   };
 };

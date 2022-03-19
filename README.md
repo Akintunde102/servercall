@@ -18,7 +18,7 @@ You can copy the code below and follow the model to create your own store
 
 ```
 
-import { ServerCallVerbs, ServerCallsType } from '../../types';
+import { ServerCallVerbs, ServerCallsType } from 'servercall';
 
 export type ServerCallsKeyType = 'userExists' | 'sendShortCode' | 'getUser';
 
@@ -34,16 +34,40 @@ export const serverCalls: ServerCallsType<ServerCallsKeyType> ={
 ### Create the initialization file (servercall/index.ts)
 
 ```
-  const serverCall = createServerCall({
+import { createServerCall } from 'servercall';
+
+export const serverCall = createServerCall({
     baseUrl: 'http://localhost:9000',
-    logger: mockConsole,
+    logger: console,
     defaultAuthSource: () => 'fake-auth',
     defaultResponseDataDept: (response: any) => response?.['data'],
     successFieldDept: (response: any) => response?.['data']?.['success'],
+   handleServerError: 
   });
 
-export const serverCall;
 ```
+
+- `baseUrl: string`,  the base URL of the server being called
+- `logger: string` , the logger servercall is expected to use to debug errors, requests, and response details. e.g. console. Most importantly, the logger should have a log field. Just like console.log.
+- `defaultAuthSource`: Function: This function should return your authentication token. e.g () => "bearer token"
+- `defaultResponseDataDept: Function: This function simply shows how deep the data object is located in the response object e.g. (response: any) => response?.['data']
+- `successFieldDept`: Function: This function simply shows shows how deep the success field is if you have any . e.g. (response: any) => response?.['data']?.['success'],
+- `handleServerError`: Function: This is an optional function that handles the errors servercall . if not set, servercall handles error by default. it should look like this.
+
+```
+export const defaultServerErrorHandler = ({ error, errorTag, defaultError }: HandleServerError) => {
+  if (error.response) {
+    const { status, statusText, data } = error.response;
+    logger.log({ error: error.response }, errorTag);
+
+    return { success: false, error: { status, statusText, data } };
+  }
+
+  return { success: false, error };
+};
+
+```
+
 
 ### Finally, USAGE:
 
@@ -57,6 +81,18 @@ export const serverCall;
       run: false,
     });
 ```
+
+
+#Response is in one form : { success, error, dataReturned}
+
+- Success: boolean: It returns the success state of the request
+- error: string: Error is set when success is false,
+- dataReturned: any. This is data returned from the server
+
+
+- Arguments is the following form
+
+
 
 
 
