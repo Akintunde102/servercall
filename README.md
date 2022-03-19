@@ -1,4 +1,4 @@
-# Smart Way of Making Http Requests
+# Easier Way of making Http Requests
 
 ### Install the Npm Package
 ```bash
