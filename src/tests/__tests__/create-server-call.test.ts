@@ -2,12 +2,12 @@ import { createServerCall } from '../../create-server-call';
 import { serverCalls } from '../resources/fake-server-call-store';
 
 describe('ServerCall', () => {
-  const mockConsole = { log: () => { } };
+  const mockConsole = { log: () => {} };
   const mockConsoleLog = jest.spyOn(mockConsole, 'log');
   const serverCall = createServerCall({
     baseUrl: 'http://localhost:9000',
     logger: mockConsole,
-    handleServerError: () => { },
+    handleServerError: () => {},
     defaultAuthSource: () => 'fake-auth',
     defaultResponseDataDept: (response: any) => response?.['data']?.['data']?.['data'],
     successFieldDept: (response: any) => response?.['data']?.['data']?.['success'],
@@ -45,7 +45,7 @@ describe('ServerCall', () => {
       authorized: true,
     });
     expect(response.success).toEqual(true);
-    expect(response.dataReturned).toBeDefined()
+    expect(response.dataReturned).toBeDefined();
   });
 
   it('returns onSuccessResponse', async () => {
@@ -54,9 +54,9 @@ describe('ServerCall', () => {
       pathArgs: { id: '620aec25eaf54c618c8f26f2' },
       authorized: true,
       onSuccess: (dataReturned: any) => {
-        return "done";
-      }
+        return 'done';
+      },
     });
-    expect(response.onSuccessResponse).toBe("done")
+    expect(response.onSuccessResponse).toBe('done');
   });
 });

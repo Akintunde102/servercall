@@ -1,6 +1,6 @@
 {
     "name": "servercall",
-    "version": "1.0.21",
+    "version": "1.0.22",
     "description": "Make Http Requests Easily",
     "license": "MIT",
     "files": [

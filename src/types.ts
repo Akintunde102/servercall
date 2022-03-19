@@ -1,4 +1,4 @@
-import { createAxiosInstances } from "./server-instances";
+import { createAxiosInstances } from './server-instances';
 
 type AnyFunction = () => any;
 
