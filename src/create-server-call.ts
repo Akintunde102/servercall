@@ -1,6 +1,7 @@
 import { defaultServerErrorHandler } from './default-server-error-handler';
 import { ServerCallProps, ServerCallArgs, ServerGetArgs, createAxiosInstances, CreateServerCall } from './index';
 
+// test is PR is working
 type CreateServerCallResponse = <T>(serverCallArgs: ServerCallArgs) => Promise<T | any>;
 
 export const createServerCall = <DefaultServerCallResponse>({
