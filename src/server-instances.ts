@@ -56,5 +56,65 @@ export const createAxiosInstances = (baseURL: string) => {
         throw error;
       }
     },
+    delete<T = any>({ url, params, token, contentType }: ServerGetArgs<T>) {
+      try {
+        return axiosCreate.delete(url, {
+          headers: createHeaders(token, contentType),
+          params,
+        });
+      } catch (error) {
+        throw error;
+      }
+    },
+    head<T = any>({ url, params, token, contentType }: ServerGetArgs<T>) {
+      try {
+        return axiosCreate.head(url, {
+          headers: createHeaders(token, contentType),
+          params,
+        });
+      } catch (error) {
+        throw error;
+      }
+    },
+    options<T = any>({ url, params, token, contentType }: ServerGetArgs<T>) {
+      try {
+        return axiosCreate.options(url, {
+          headers: createHeaders(token, contentType),
+          params,
+        });
+      } catch (error) {
+        throw error;
+      }
+    },
+    patch<T = any>({ url, params, token, contentType }: ServerGetArgs<T>) {
+      try {
+        return axiosCreate.patch(url, {
+          headers: createHeaders(token, contentType),
+          params,
+        });
+      } catch (error) {
+        throw error;
+      }
+    },
+    put<T = any>({ url, params, token, contentType }: ServerGetArgs<T>) {
+      try {
+        return axiosCreate.put(url, {
+          headers: createHeaders(token, contentType),
+          params,
+        });
+      } catch (error) {
+        throw error;
+      }
+    },
+    trace<T = any>({ url, params, token, contentType }: ServerGetArgs<T>) {
+      try {
+        return axiosCreate.get(url, {
+          headers: createHeaders(token, contentType),
+          params,
+        });
+      } catch (error) {
+        throw error;
+      }
+    },
   };
 };

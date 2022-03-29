@@ -1,3 +1,4 @@
+import { SupportInfo } from 'prettier';
 import { createAxiosInstances } from './server-instances';
 
 type AnyFunction = () => any;
@@ -7,6 +8,12 @@ type PathFunction = (args: any) => string;
 export enum ServerCallVerbs {
   Get = 'get',
   Post = 'post',
+  Delete = 'delete',
+  Put = 'put',
+  Patch = 'patch',
+  Head = 'head',
+  Options = 'options',
+  Trace = 'trace',
 }
 
 export interface ServerCall {
@@ -54,3 +61,9 @@ export interface ServeServerCall extends Omit<CreateServerCall, 'baseUrl'> {
 export type CreateServerCallResponse = <T>(serverCallArgs: ServerCallArgs) => Promise<T | any>;
 
 export type ServerCallsType<T extends string> = Record<T, ServerCall>;
+
+export interface GenerateServerStoreArgs {
+  apidoc: string;
+  storepath: string;
+
+}
