@@ -1,24 +1,36 @@
 # Easier Way of making Http Requests
 
-### Install the Npm Package
+#### Install the Npm Package
 ```bash
 npm install servercall --save
 ```
 
-### Create a folder called `servercall` inside your project. 
+#### Create a folder called `servercall` inside your project. 
 ```bash
 mkdir servercall
 ```
 
-### Create an Endpoint Store file (/servercall/store.ts) . 
+#### Create a Store file to store your endpoints (/servercall/store.ts).
 
+This can be done in two ways
+### 1. By AutoGeneration
+- Step 1: Install Servercall-cli globally
+```bash
+npm install servercall-cli -g
+```
+- Step 2: Generate the servercall store by providing your Open API url and your store location as below
+```bash
+servercall-cli generate -s servercall/store.ts -a https://api.example.com/docs-json
+```
+
+> Replace `https://api.example.com/docs-json` with your own API url
+
+### 2. By Manual Process
+- Step 1: Create the Store file
 ```bash
 touch servercall/store.ts
 ```
-
-This is where you endpoints are stored. <br/>
-
-### Copy the code below and follow the model to create your own store
+- Step 2: Copy the code below, edit it and follow the model to create your own store
 
 ```ts
 import { ServerCallVerbs, ServerCallsType } from 'servercall';
@@ -32,9 +44,9 @@ export const serverCalls: ServerCallsType<ServerCallsKeyType> ={
 };
 
 ```
-### > You are almost done
+#### > You are almost done
 
-### Create the initialization file (servercall/init.ts)
+#### Create the initialization file (servercall/init.ts)
 
 ```
 touch servercall/init.ts
@@ -50,7 +62,7 @@ export const serverCall = createServerCall({
     defaultAuthSource: () => 'fake-auth',
     defaultResponseDataDept: (response: any) => response?.['data'],
     successFieldDept: (response: any) => response?.['data']?.['success'],
-    handleServerError: ()=>{}
+    // handleServerError: ()=>{}
   });
 
 ```
@@ -60,9 +72,11 @@ export const serverCall = createServerCall({
 - `defaultAuthSource`: Function: This function should return your authentication token. e.g () => "bearer token"
 - `defaultResponseDataDept: Function: This function simply shows how deep the data object is located in the response object e.g. (response: any) => response?.['data']
 - `successFieldDept`: Function: This function simply shows shows how deep the success field is if you have any . e.g. (response: any) => response?.['data']?.['success'],
-- `handleServerError`: Function: This is an optional function that handles the errors that can occur while calling your endpoints. if not set, servercall handles error by default. it should look like this below. Most importantly. The arguments should be in this form `{ error,
+- `handleServerError`: Function: This is an optional function that handles the errors that can occur while calling your endpoints. if not set, servercall handles error by default. it should look like this below. 
+
+> Note: handleServerError arguments should be in this form `{ error,
   errorTag,
-  defaultError}` and the response should be in this form `{ success: false, error: errorMessage }`
+  defaultError}` and the response must always be in this form `{ success: false, error: errorMessage }`. **<code>success</code> has to be false and an `error` has to be a string**
   
 
   - ##### Sample Code for handleServerError is Below
