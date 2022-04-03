@@ -52,7 +52,7 @@ export const serverCalls: ServerCallsType<ServerCallsKeyType> ={
 touch servercall/init.ts
 ```
 
-### Copy the code below into (servercall/init.ts) and readjust to fit your own use case
+#### Copy the code below into (servercall/init.ts) and readjust to fit your own use case
 ```ts
 import { createServerCall } from 'servercall';
 
@@ -97,7 +97,7 @@ export const handleServerError = ({
 };
 ```
 
-### Create an Index File
+#### Create an Index File
 > This makes importing the files cleaner
 
 Run the below code from your project root
@@ -113,7 +113,7 @@ export * from './store';
 
 
 
-### Finally, USAGE:
+#### Finally, USAGE:
 Copy the code below to where you want to make api calls
 
 ```ts
@@ -132,14 +132,14 @@ Copy the code below to where you want to make api calls
 ```
 
 
-### Response is in one form : { success, error, dataReturned}
+#### Response is in one form : { success, error, dataReturned}
 
 - Success: boolean: It returns the success state of the request
 - error: string: Error is set when success is false,
 - dataReturned: any. This is data returned from the server
 
 
-### Arguments is the following form
+#### Arguments is the following form
 ```ts
 export interface ServerCallArgs {
     serverCallProps: ServerCallProps;
