@@ -18,7 +18,8 @@ This can be done in two ways
 ```bash
 npm install servercall-cli -g
 ```
-- Step 2: Generate the servercall store by providing your Open API url and your store location as below
+- Step 2: Create the folder where `servercall` store will reside. e.g. `servercall`
+- Step 3: Generate the servercall store by providing your Open API url and your store location as below
 ```bash
 servercall-cli generate -s servercall/store.ts -a https://api.example.com/docs-json
 ```
