@@ -82,8 +82,8 @@ const formatPathIfNecessary = (path: string, verbObj: OpenAPIV3.OperationObject)
     const pathParams = (parameters ?? []).filter(param => (param as OpenAPIV3.ParameterObject).in === 'path');
     if (pathParams?.length) {
         const func = { tail: path, argArr: [] as any, head: `` };
-        for (let j = 0; j < pathParams.length; j++) {
-            const { name, schema } = pathParams[j] as OpenAPIV3.ParameterObject;
+        for (const pathParam of pathParams) {
+            const { name, schema } = pathParam as OpenAPIV3.ParameterObject;
             const { type: schemaType = 'any' } = schema as OpenAPIV3.NonArraySchemaObject;
             func.tail = func.tail.replace(`{${name}}`, `\${args.${name}}`);
             func.argArr.push(`${name}:  ${schemaType}`);

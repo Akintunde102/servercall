@@ -5,13 +5,9 @@ import { getArgs } from "./get-args";
 import { logger } from './logger';
 import { GenerateServerStoreArgs } from "./types";
 
-/**
- *
- Generate Server Store from Open API Docs 
- */
 
 export const generateServerStore = async () => {
-    const {apidoc, storepath} = getArgs<GenerateServerStoreArgs>(process);
+    const { apidoc, storepath } = getArgs<GenerateServerStoreArgs>(process);
 
     const { store: serverStore, keyType } = await convertOpenAPiToServerCallStore(apidoc);
 
@@ -25,7 +21,7 @@ export const serverCalls: ServerCallsType<ServerCallsKeyType> = ${serverStore};
 
     const prettyContent = prettier.format(content, { semi: true, parser: "typescript" });
 
-    fs.writeFile(fileLocation, prettyContent, function (err) {
+    fs.writeFile(fileLocation, prettyContent, (err) => {
         if (err) {
             logger.log("Error while creating" + fileLocation)
         } else {
