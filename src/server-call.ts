@@ -28,7 +28,6 @@ export const serveServerCall =
       const props = getServerCallProps<typeof verb>(serverCallArgs, defaultAuthSource);
 
       try {
-        //ts-ignore
         const response = await server[verb](props);
         const responseInDept = responseDataDept(response);
         let onSuccessResponse = null;
