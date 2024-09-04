@@ -35,12 +35,12 @@ describe('ServerCall', () => {
       authorized: true,
       debug: true,
     });
-   // expect(mockConsoleLog).toHaveBeenCalledTimes(1);
+    // expect(mockConsoleLog).toHaveBeenCalledTimes(1);
   });
 
   it('returns correct response', async () => {
     const response = await serverCall({
-      serverCallProps: { call: serverCalls["get:usersIdId"]},
+      serverCallProps: { call: serverCalls['get:usersIdId'] },
       pathArgs: { id: '620aec25eaf54c618c8f26f2' },
       authorized: true,
     });

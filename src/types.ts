@@ -65,5 +65,4 @@ export type ServerCallsType<T extends string> = Record<T, ServerCall>;
 export interface GenerateServerStoreArgs {
   apidoc: string;
   storepath: string;
-
 }
