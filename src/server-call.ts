@@ -29,7 +29,7 @@ export const serveServerCall =
 
       try {
         //ts-ignore
-        const response = await server[verb](props); 
+        const response = await server[verb](props);
         const responseInDept = responseDataDept(response);
         let onSuccessResponse = null;
         const success = successFieldDept === undefined ? true : successFieldDept(response);

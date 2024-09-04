@@ -1,4 +1,3 @@
-/** Convert Open API Schemas to Server call store*/
 import { OpenAPIV3 } from "openapi-types";
 import { pick } from "lodash";
 import { logger } from "./logger";
@@ -27,7 +26,7 @@ export const convertOpenAPiToServerCallStore = async (source: any) => {
 }
 
 
-/** Reformat Server Store  */
+
 
 const reformatServerStore = (store: any) => {
     const stringifiedStore = JSON.stringify(store);
@@ -37,7 +36,6 @@ const reformatServerStore = (store: any) => {
 }
 
 
-/*** Map HttpMethods to ServerCallVerbs */
 
 const mapHttpMethodsToServerCallVerbs = (verb: OpenAPIV3.HttpMethods): string => {
     const map: Record<OpenAPIV3.HttpMethods, string> = {
